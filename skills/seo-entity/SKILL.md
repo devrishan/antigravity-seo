@@ -19,7 +19,7 @@ When Google Search or Google AI Overviews conflate two people or brands with the
 Ensure the homepage (`/`) and dedicated profile page (`/about`) emit a unified `@id`-linked `Person` entity:
 - `@id`: `https://yourdomain.com/#person`
 - `name` + `alternateName` (include middle names, handles like `@handle`, native-script spellings, and city/university qualifiers)
-- `disambiguatingDescription`: Explicitly state institution, degree/role, city, and clarify distinction from unrelated entities sharing the name (without keyword stuffing).
+- `disambiguatingDescription`: Explicitly state institution, degree/role, city, and primary domain using **positive identity qualifiers** (never mention or link a competing person's URL on your own site, as co-occurrence can reinforce unwanted associations).
 - `sameAs`: Array of **only** verified, owned URLs (`LinkedIn`, `GitHub`, `X`, `Instagram`, `YouTube`, `ORCID`, `Google Scholar`, `Wikidata`). Never include third-party aggregator profiles or unverified namesake links.
 - `affiliation` / `alumniOf` / `hasCredential` / `hasOccupation` / `homeLocation` / `workLocation` / `knowsAbout`: Anchor the entity in specific organizations and places.
 - `mainEntityOfPage`: Link to `ProfilePage` (`https://yourdomain.com/about#profile`).
