@@ -34,14 +34,14 @@ Use `uv run` from the plugin root directory so no global Python environment is p
 
 ```bash
 # SSRF-safe HTML fetch & parse
-uv run --with beautifulsoup4 --with lxml --with httpx scripts/fetch_page.py https://example.com
-uv run --with beautifulsoup4 --with lxml scripts/parse_html.py --url https://example.com --json
+uv run --with requests --with beautifulsoup4 --with lxml scripts/fetch_page.py https://example.com
+uv run --with requests --with beautifulsoup4 --with lxml scripts/parse_html.py --url https://example.com --json
 
 # PageSpeed / Core Web Vitals (LCP, INP, CLS)
-uv run --with httpx scripts/pagespeed_check.py https://example.com --json
+uv run --with requests scripts/pagespeed_check.py https://example.com --json
 
 # Agentic readiness (robots.txt, llms.txt, /.well-known, WebMCP)
-uv run --with httpx --with beautifulsoup4 scripts/agentic_check.py https://example.com --json
+uv run --with requests --with beautifulsoup4 --with lxml scripts/agentic_check.py https://example.com --json
 
 # Generate Schema.org JSON-LD
 uv run scripts/schema_generate.py --type Person --json

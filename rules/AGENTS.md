@@ -5,8 +5,8 @@ You have the **antigravity-seo** plugin active. Follow these rules whenever perf
 ## 1. Execution & Script Runtime
 - Bundled Python scripts live in `scripts/` inside the plugin directory.
 - Run scripts with **`uv run`** (never assume bare `python` is in PATH on Windows/macOS) or `python3` if `uv` is unavailable:
-  - `uv run --with beautifulsoup4 --with lxml --with httpx scripts/fetch_page.py <url>`
-  - `uv run --with beautifulsoup4 --with lxml scripts/parse_html.py --url <url> --json`
+  - `uv run --with requests --with beautifulsoup4 --with lxml scripts/fetch_page.py <url>`
+  - `uv run --with requests --with beautifulsoup4 --with lxml scripts/parse_html.py --url <url> --json`
 - All URL fetches MUST go through `url_safety.py` / `fetch_page.py` for SSRF & DNS-rebinding protection.
 - When running inside a local codebase (workspace), inspect the actual source files directly with `read_file` / `edit_file` and verify with the project's build and test suite.
 
