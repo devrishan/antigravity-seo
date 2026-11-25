@@ -1,0 +1,26 @@
+{
+  "version": "1.1.0",
+  "gates": [
+    { "id": "SEO-001", "category": "seo", "check": "All canonical sitemap URLs return HTTP 200", "policy": "block", "recovery": "Fix failing route/SSR loader and re-run sitemap HTTP crawl." },
+    { "id": "SEO-002", "category": "seo", "check": "Self-referencing canonical URL matches og:url without trailing slash drift", "policy": "block", "recovery": "Normalize route createSeoMeta(path) and server.js 301 redirect rules." },
+    { "id": "SEO-003", "category": "seo", "check": "Zero broken internal links and zero dead URLs in llms.txt", "policy": "block", "recovery": "Derive links from central content/simulator registry or update llms.txt." },
+    { "id": "SEO-004", "category": "seo", "check": "Unique page <title> (<=60 chars) and <meta description> per indexable route", "policy": "block", "recovery": "Remove fallback boilerplate sharing; assign route-specific copy." },
+    { "id": "SEO-005", "category": "entity", "check": "Consistent Person @id across /, /about ProfilePage, BlogPosting, and Projects", "policy": "block", "recovery": "Point all author/publisher references to https://<domain>/#person." },
+    { "id": "SEO-006", "category": "entity", "check": "Verified sameAs and rel='me' links with positive disambiguatingDescription (no namesake URL co-occurrence)", "policy": "block", "recovery": "Scrub competing namesake URLs from HTML/JSON-LD; keep positive qualifiers only." },
+    { "id": "SEO-007", "category": "security", "check": "Protected routes (/admin, /login, /workspace, /api) excluded from sitemap.xml", "policy": "block", "recovery": "Filter private prefixes in generate-sitemap.js and enforce X-Robots-Tag: noindex." },
+    { "id": "SEO-008", "category": "seo", "check": "No unintended empty syllabus or stub pages in sitemap", "policy": "block", "recovery": "Mark status:'planned' + noindex or populate units before indexing." },
+    { "id": "MDX-001", "category": "content", "check": "All MDX curriculum files compile cleanly during Vite SSR/client build", "policy": "block", "recovery": "Escape currency $ in prose and fence multi-line $$ math blocks cleanly." },
+    { "id": "MDX-002", "category": "content", "check": "GFM tables render via remark-gfm without raw pipe characters", "policy": "block", "recovery": "Ensure remarkGfm is loaded in MDX remarkPlugins pipeline." },
+    { "id": "MATH-001", "category": "content", "check": "Zero .katex-error nodes and KaTeX MathFormula rendering in FormulaStrip", "policy": "block", "recovery": "Route LaTeX strings through synchronous SSR-safe <MathFormula>." },
+    { "id": "MATH-002", "category": "content", "check": "Numerical engineering reference vectors pass in Vitest", "policy": "block", "recovery": "Fix solver equations and re-run Vitest before merge." },
+    { "id": "SIM-001", "category": "simulators", "check": "Every simulator slug and ParametricProblem type exists in lazy/generator registries", "policy": "block", "recovery": "Register missing component/generator and run registry gate test." },
+    { "id": "JS-001", "category": "runtime", "check": "Zero console.error, pageerror, or SSR hydration mismatch (#418/#419) on key routes", "policy": "block", "recovery": "Fix non-deterministic SSR/client markup and inspect server response." },
+    { "id": "A11Y-001", "category": "a11y", "check": "Zero WCAG 2.1 AA contrast or ARIA violations across Dark and Light modes", "policy": "block", "recovery": "Use semantic CSS variables and lock explicit dark panels with .dark." },
+    { "id": "A11Y-002", "category": "a11y", "check": "Single <main> landmark, single <h1>, no skipped heading levels, labeled sliders", "policy": "block", "recovery": "Replace inner <main> wrappers with <div> and pass showHeader={false}." },
+    { "id": "UI-001", "category": "ui", "check": "Zero horizontal overflow across 360x800, 390x844, 768x1024, and 1440x900", "policy": "block", "recovery": "Add min-w-0 / overflow-x-hidden constraints on responsive grids." },
+    { "id": "UI-002", "category": "ui", "check": "Zero fixed-header occlusion or overlapping floating action buttons (FABs)", "policy": "block", "recovery": "Ensure pt-24/pt-28 below fixed navbar and distinct FAB offsets." },
+    { "id": "SEC-001", "category": "security", "check": "Server-side JWT/role verification fails closed (302/401/403) on /admin* and /api/admin*", "policy": "block", "recovery": "Verify identity via verifyCallerIdentity + verifyCallerRole before rendering SSR HTML." },
+    { "id": "SEC-003", "category": "security", "check": "HSTS, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy, CSP present", "policy": "warn-then-block", "recovery": "Deploy Content-Security-Policy-Report-Only first, validate zero blocks, then enforce." },
+    { "id": "PERF-001", "category": "performance", "check": "LCP <= 2.5s, INP <= 200ms, CLS <= 0.1, bounded entry JS budget", "policy": "warn", "recovery": "Lazy-load heavy 3D/KaTeX/AI bundles and preload hero LCP image." }
+  ]
+}

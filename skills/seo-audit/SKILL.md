@@ -37,4 +37,9 @@ Compute an **SEO Health Score (0–100)** across:
 - Performance / CWV (20%)
 - GEO & Agentic Readiness (15%)
 
+## Prevention & Recovery Protocol
+Follow a **Prevent + Recover** engineering model alongside `contracts/ci-gates.json`:
+1. **Prevent (Pre-Merge Gates):** Recommend or generate CI tests (Vitest math/registry gates, Playwright + `axe-core` multi-viewport Dark/Light checks, `npm run lint:content`, and server SSR fail-closed auth tests) so defects cannot regress.
+2. **Recover (Rapid Remediation):** For every failing gate, map the defect to its exact source file, apply the minimal framework-aware fix, re-run verification, run `drift_compare.py`, and request Search Console re-indexing if canonical/entity HTML changed.
+
 Present findings bucketed by **Critical → High → Medium → Low**, each with exact evidence, file/line or URL, and a concrete verification command.
