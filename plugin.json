@@ -1,0 +1,21 @@
+{
+  "name": "antigravity-seo",
+  "displayName": "Antigravity SEO",
+  "version": "1.0.0",
+  "description": "Autonomous SEO, GEO (AI Overviews), Entity Disambiguation, Schema.org, E-E-A-T, Core Web Vitals, and Agentic Readiness audit & remediation toolkit for Google Antigravity.",
+  "logo": "assets/logo.svg",
+  "author": {
+    "name": "Rishan KP",
+    "url": "https://rishankp.engineer"
+  },
+  "homepage": "https://github.com/devrishan/antigravity-seo",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devrishan/antigravity-seo"
+  },
+  "suggestedPrompts": [
+    "Run a full SEO, GEO, and entity disambiguation audit on my site",
+    "Audit and fix Schema.org JSON-LD and E-E-A-T signals across this codebase",
+    "Check AI Overviews, llms.txt, and agentic browsing readiness for this URL"
+  ]
+}
