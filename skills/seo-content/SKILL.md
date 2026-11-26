@@ -8,7 +8,7 @@ description: >-
 
 # Content Quality & E-E-A-T Audit
 
-Run `uv run --with beautifulsoup4 --with lxml scripts/content_quality.py --url <url> --json`.
+Run `uv run --with beautifulsoup4 --with lxml scripts/content_quality.py --url <url> --json` and check recent Google updates via `uv run scripts/seo_updates.py --since 2025-01 --limit 0 --json`.
 
 ## E-E-A-T Evaluation (2026)
 - **Experience:** First-hand bench photos, real telemetry, original experiments, case-study outcomes, dates.

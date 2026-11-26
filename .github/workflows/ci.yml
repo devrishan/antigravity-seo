@@ -12,8 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
-      - name: Validate plugin.json and Python syntax
+      - name: Validate plugin.json, Python syntax, and Pytest suite
         run: |
           python3 -c "import json; d=json.load(open('plugin.json')); assert d['name']=='antigravity-seo'"
-          python3 -m compileall -q scripts/
+          python3 -m compileall -q scripts/ hooks/
           uv run scripts/schema_generate.py --help
+          uv run --with pytest --with requests --with beautifulsoup4 --with lxml --with lxml_html_clean --with idna --with Pillow --with trafilatura --with htmldate --with courlan --with openpyxl --with matplotlib --with google-api-python-client --with google-auth --with PySocks pytest -q

@@ -214,7 +214,8 @@ def robots_lines(text: str) -> list:
 def parse_robots(text: str) -> dict:
     """Parse robots.txt into RFC 9309 groups plus global lines.
 
-    A group is one or more consecutive ``user-agent`` lines followed by rules.
+    A group is one or more ``user-agent`` lines followed by access rules.
+    Other records do not interrupt its user-agent block (RFC 9309 section 2.2.4).
     ``content-signal`` and other non-global lines attach to the current group.
     """
     groups: list = []
@@ -234,7 +235,9 @@ def parse_robots(text: str) -> dict:
             current["agents"].append(value)
             last_was_ua = True
             continue
-        last_was_ua = False
+        # Other records cannot end a group (RFC 9309 section 2.2.4).
+        if field in ("allow", "disallow"):
+            last_was_ua = False
         if field == "sitemap":
             global_lines["sitemap"].append(value)
         elif field == "agentmap":
@@ -557,6 +560,7 @@ _LLMS_ITEM = re.compile(r"^-\s*\[(?P<title>[^\]]+)\]\((?P<url><[^>\n]+>|(?:[^()\
 _LLMS_BULLET = re.compile(r"^([-*+]|\d{1,3}[.)])\s+")
 _LLMS_FENCE = re.compile(r"^(```|~~~)")
 _LLMS_ATX = re.compile(r"(#{1,6})(?=\s|$)")
+_LLMS_OPTIONAL = re.compile(r"optional\b", re.I)
 
 
 def _llms_heading(stripped: str) -> Optional[tuple]:
@@ -593,9 +597,13 @@ def llms_format_notes(text: Optional[str], base_url: Optional[str] = None,
     """
     raw = (text or "").lstrip("\ufeff")
     found: list = []
+    counts: dict = {}
 
     def add(note_id: str, line: Optional[int] = None, detail: str = "") -> None:
-        found.append((line, note_id, detail.strip()[:80]))
+        n = counts.get(note_id, 0) + 1
+        counts[note_id] = n
+        if n <= LLMS_NOTES_PER_ID:
+            found.append((line, note_id, detail.strip()[:80]))
 
     h1_lines: list = []
     sections: list = []
@@ -607,15 +615,17 @@ def llms_format_notes(text: Optional[str], base_url: Optional[str] = None,
     first_after_title = None
     for number, line in enumerate(_LINE_BREAK.split(raw), 1):
         stripped = line.strip()
-        opener = _LLMS_FENCE.match(stripped)
+        if not stripped:
+            if not fence and summary_seen and stage == "title":
+                stage = "details"  # a blank line ends the summary blockquote
+            continue
+        opener = _LLMS_FENCE.match(stripped) if stripped.startswith(("```", "~~~")) else None
         if opener and (fence is None or opener.group(1) == fence):
             fence = None if fence else opener.group(1)
             continue
-        if fence or not stripped:
-            if summary_seen and stage == "title":
-                stage = "details"  # a blank line ends the summary blockquote
+        if fence:
             continue
-        heading = _llms_heading(stripped)
+        heading = _llms_heading(stripped) if stripped.startswith("#") else None
         if stage == "start":
             if heading and heading[0] == 1 and heading[1]:
                 title_seen, stage = True, "title"
@@ -646,17 +656,18 @@ def llms_format_notes(text: Optional[str], base_url: Optional[str] = None,
             continue
         # stage == "sections": only list items carry links; prose is content.
         section = sections[-1]
-        bullet = _LLMS_BULLET.match(stripped)
+        first_ch = stripped[0]
+        bullet = _LLMS_BULLET.match(stripped) if (first_ch in "-*+" or "0" <= first_ch <= "9") else None
         if not bullet:
             continue
         body = stripped[bullet.end():]
-        item = _LLMS_ITEM.match("- " + body)
+        item = _LLMS_ITEM.match("- " + body) if (body.startswith("[") and "](" in body) else None
         if not item:
             if body.startswith("["):
                 note_id = "malformed-link"  # `[Name] (url)` or a space in the URL
             elif "](" in body:
                 note_id = "link-not-at-start"  # a sentence with a link in it
-            elif re.search(r"https?://", body):
+            elif "http://" in body or "https://" in body:
                 note_id = "malformed-link"  # a bare address, not written as a link
             else:
                 note_id = "item-without-link"
@@ -697,7 +708,7 @@ def llms_format_notes(text: Optional[str], base_url: Optional[str] = None,
     for section in sections:
         if not section["links"]:
             add("empty-section", section["line"], "## " + section["name"])
-        if section["name"] != "Optional" and re.match(r"optional\b", section["name"], re.I):
+        if section["name"] != "Optional" and _LLMS_OPTIONAL.match(section["name"]):
             add("optional-heading-variant", section["line"], "## " + section["name"])
     total_links = sum(section["links"] for section in sections)
     if not total_links:
@@ -712,12 +723,8 @@ def llms_format_notes(text: Optional[str], base_url: Optional[str] = None,
         add("content-type", None, kind)
 
     found.sort(key=lambda note: (note[0] is None, note[0] or 0, note[1]))
-    counts: dict = {}
     notes = []
     for line, note_id, detail in found:
-        counts[note_id] = counts.get(note_id, 0) + 1
-        if counts[note_id] > LLMS_NOTES_PER_ID:
-            continue  # a long file can repeat one pattern hundreds of times
         level, message = LLMS_FORMAT_RULES[note_id]
         note = {"id": note_id, "level": level, "line": line, "message": message}
         if detail:
@@ -1257,19 +1264,30 @@ def audit_ua_matrix(url: str) -> tuple[list, dict]:
 
 
 def audit_not_found(root: str) -> tuple[list, dict]:
-    """Does an unknown URL return a real 404? Catch-all 200s break discovery files."""
+    """Does an unknown URL report missing content? Catch-all 200s break discovery files."""
     probe = f"{root}/claude-seo-404-probe-{os.urandom(4).hex()}"
     rec = fetch(probe)
     data = {"probe_url": probe, "status": rec["status"], "content_type": _ctype(rec)}
     catch_all = rec["status"] == 200
     data["catch_all_200"] = catch_all
+    if catch_all:
+        status = "warn"
+        fix = ("Unknown paths return 200. Crawlers see soft 404s, and Lighthouse fails llms-txt and "
+               "ard-schema on the catch-all page. Serve a real 404 for paths that do not exist.")
+    elif rec["status"] in (404, 410):
+        status, fix = "pass", None
+    else:
+        status = "info"
+        data["inconclusive"] = True
+        if rec.get("error"):
+            data["error"] = rec["error"]
+        observed = f"HTTP {rec['status']}" if rec["status"] else "no HTTP response"
+        fix = (f"The unknown-path probe returned {observed}, so missing-page handling could not "
+               "be verified. Retry when the site is reachable and allows the probe; unknown "
+               "paths should return 404 or 410.")
     return [_check(
-        "http-404", "Unknown URLs return a real 404", "P1",
-        "warn" if catch_all else ("pass" if rec["status"] and rec["status"] >= 400 else "info"),
-        "HTTP semantics (RFC 9110); Google soft-404 guidance", data,
-        "Unknown paths return 200. Crawlers see soft 404s, and Lighthouse fails llms-txt and "
-        "ard-schema on the catch-all page. Serve a real 404 for paths that do not exist."
-        if catch_all else None)], data
+        "http-404", "Unknown URLs report missing content", "P1", status,
+        "HTTP semantics (RFC 9110); Google soft-404 guidance", data, fix)], data
 
 
 def summarize(checks: list) -> dict:

@@ -24,9 +24,23 @@ This skill turns Google Antigravity into an autonomous technical SEO, GEO (Gener
 | Technical SEO | `seo-technical` | Crawlability, indexability, security headers, INP/LCP/CLS |
 | Content & E-E-A-T | `seo-content` | Experience, Expertise, Authoritativeness, Trustworthiness |
 | Agentic readiness | `seo-agentic` | `llms.txt`, `robots.txt` AI groups, `Content-Signal`, WebMCP |
-| XML Sitemaps | `seo-sitemap` | Sitemap discovery, canonical parity, image sitemaps |
+| XML Sitemaps | `seo-sitemap` | Sitemap discovery, canonical parity, News `<news:news>` limits, image sitemaps |
 | Images | `seo-images` | Alt text, dimensions, WebP/AVIF, LCP preload |
 | Baseline & Drift | `seo-drift` | SQLite snapshots & regression comparison |
+| Bing Webmaster & IndexNow | `seo-bing` | Bing indexation, Microsoft Copilot citations, IndexNow submission |
+| Google Search APIs | `seo-google` | GSC Analytics, URL Inspection, CrUX history, Indexing API, GA4, NLP |
+| Backlink Profile | `seo-backlinks` | Moz, Bing, Keywords Everywhere, Common Crawl, verification crawler |
+| Strategic SEO Roadmap | `seo-plan` | Site-type strategy, content pillars, KPI targets |
+| Programmatic SEO | `seo-programmatic` | Template uniqueness gates, index bloat, metadata template risk |
+| Competitor Comparison Pages | `seo-competitor-pages` | `[Brand] vs [Competitor]` and `Alternatives` conversion pages |
+| Keyword Clustering | `seo-cluster` | SERP-overlap clustering and hub-and-spoke internal linking |
+| Content Briefs | `seo-content-brief` | Search-intent briefs, outline structure, page-type templates |
+| Local SEO | `seo-local` | Local pack, GBP optimization, NAP citations, local landing pages |
+| Google Maps & Geo-Grids | `seo-maps` | Local Finder rankings, service-area grids, Maps visibility |
+| International / Hreflang | `seo-hreflang` | Reciprocal `hreflang`, `x-default`, ccTLD/subfolder strategy |
+| Search Experience (SXO) | `seo-sxo` | Backwards SERP classification, persona scoring, IST/SOLL wireframes |
+| E-commerce & UCP | `seo-ecommerce` | Product SEO, Shopping/Merchant feeds, `/.well-known/ucp` verification |
+| FLOW Prompt Framework | `seo-flow` | Find · Leverage · Optimize · Win 41-prompt workflow (`sync_flow.py`) |
 
 ## Running Bundled Scripts
 

@@ -18,6 +18,7 @@ Run in parallel:
 - `uv run --with beautifulsoup4 --with lxml --with httpx scripts/fetch_page.py <url>`
 - `uv run --with beautifulsoup4 --with lxml scripts/parse_html.py --url <url> --json`
 - `uv run --with httpx --with beautifulsoup4 scripts/agentic_check.py <url> --json`
+- `uv run scripts/seo_updates.py --since 2025-01 --limit 0 --json` (use `--limit 0` so recent doc edits never hide core/spam updates)
 - If inspecting a local repo, check `package.json`, `robots.txt`, `sitemap.xml`, `llms.txt`, and schema/head utilities.
 
 Classify the site: **Personal/Portfolio**, **SaaS**, **E-commerce**, **Local Service**, **Publisher**, or **Agency**.

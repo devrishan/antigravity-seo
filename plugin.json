@@ -1,7 +1,7 @@
 {
   "name": "antigravity-seo",
   "displayName": "Antigravity SEO",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "Autonomous SEO, GEO (AI Overviews), Entity Disambiguation, Schema.org, E-E-A-T, Core Web Vitals, and Agentic Readiness audit & remediation toolkit for Google Antigravity.",
   "logo": "assets/logo.svg",
   "author": {

@@ -9,7 +9,7 @@ description: >-
 
 # AI Search & Generative Engine Optimization (GEO)
 
-From Google Search's official guidance: optimizing for generative AI search is **still SEO** — grounded in entity clarity, crawlability, E-E-A-T, and clear passage structure.
+From Google Search's official guidance: optimizing for generative AI search is **still SEO** — grounded in entity clarity, crawlability, E-E-A-T, and clear passage structure. Check current Google updates via `uv run scripts/seo_updates.py --since 2025-01 --limit 0 --json`.
 
 ## Core GEO Audit Criteria
 

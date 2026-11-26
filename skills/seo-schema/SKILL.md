@@ -12,7 +12,7 @@ description: >-
 Run `uv run --with beautifulsoup4 --with lxml scripts/parse_html.py --url <url> --json` or inspect `<script type="application/ld+json">` in source files.
 
 Check for:
-- Missing `@context` on root or missing `@type` on entity nodes (`@graph` containers do not need `@type`).
+- Missing `@context` on root or missing `@type` on entity nodes (top-level `@graph` is a container and not an entity, so it needs no `@type`; entries inherit the document's `@context` unless overridden).
 - Relative URLs (all `url`, `image`, `logo`, `item` must be absolute `https://` URLs).
 - Content-schema mismatches (e.g., visible authors, prices, or profiles omitted from JSON-LD).
 - Dynamically injected client-only JSON-LD for time-sensitive or primary entity markup (prefer SSR HTML).

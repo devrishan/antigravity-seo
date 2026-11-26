@@ -15,3 +15,4 @@ Verify:
 - `<loc>` matches each page's `<link rel="canonical">` exactly (protocol, www/non-www, trailing slash).
 - `<lastmod>` uses valid W3C Datetime (`YYYY-MM-DD`) and reflects actual content changes.
 - Important author/portfolio images are included via `<image:image>` where appropriate.
+- News sitemaps: max **1,000** `<news:news>` tags per file. Standard **50,000 URL and 50 MB checks** still apply and **do not replace them when the `news:` namespace is present**.

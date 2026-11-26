@@ -1,18 +1,19 @@
 [project]
-name = "claude-seo"
-version = "2.6.2"
-description = "Comprehensive SEO analysis skill for Claude Code"
+name = "antigravity-seo"
+version = "1.2.0"
+description = "Autonomous SEO, GEO, Entity Disambiguation, Schema.org, CWV, and Agentic Readiness plugin for Google Antigravity"
 requires-python = ">=3.11"
 license = "MIT"
 readme = "README.md"
 authors = [
-  {name = "Daniel Agrici"}
+  {name = "Rishan KP"},
+  {name = "Daniel Agrici (upstream claude-seo)"}
 ]
-keywords = ["seo", "claude-code", "ai-tools", "schema-markup", "e-e-a-t", "geo"]
+keywords = ["seo", "antigravity", "geo", "ai-tools", "schema-markup", "e-e-a-t", "entity-disambiguation"]
 
 [project.urls]
-Homepage = "https://github.com/AgriciDaniel/claude-seo"
-Repository = "https://github.com/AgriciDaniel/claude-seo"
+Homepage = "https://github.com/devrishan/antigravity-seo"
+Repository = "https://github.com/devrishan/antigravity-seo"
 
 [tool.ruff]
 target-version = "py311"
